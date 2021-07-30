@@ -1,0 +1,54 @@
+package Flying4D;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  dbrtl,
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon,
+  vcl,
+  vclFireDAC,
+  FireDACSqliteDriver;
+
+contains
+  Flying4D.Resources.Interfaces in 'src\resources\Flying4D.Resources.Interfaces.pas',
+  Flying4D.Resources.Conexao in 'src\resources\Flying4D.Resources.Conexao.pas',
+  Flying4D.Resources.Parameter in 'src\resources\Flying4D.Resources.Parameter.pas',
+  Flying4D.Database.BigQueryDatabase in 'src\database\Flying4D.Database.BigQueryDatabase.pas',
+  Flying4D.Database.Interfaces in 'src\database\Flying4D.Database.Interfaces.pas',
+  Flying4D.Database.BigQueryTable in 'src\database\Flying4D.Database.BigQueryTable.pas',
+  Flying4D.Database.Ignite.Thin.Interfaces in 'src\database\Flying4D.Database.Ignite.Thin.Interfaces.pas',
+  Flying4D.Database.Ignite.Thin.Database in 'src\database\Flying4D.Database.Ignite.Thin.Database.pas',
+  Flying4D.Database.Query in 'src\database\Flying4D.Database.Query.pas',
+  Flying4D.Core.Interfaces in 'src\core\configuration\Flying4D.Core.Interfaces.pas',
+  Flying4D.Core.Configuration in 'src\core\configuration\Flying4D.Core.Configuration.pas',
+  Flying4D in 'src\Flying4D.pas';
+
+end.

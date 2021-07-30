@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9D70290B-4C17-4908-867D-2649BC3CB76D}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Flying4D.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="sample\Rad\SampleRAD.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="sample\sample\ExemplodeUso.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Flying4D">
+        <MSBuild Projects="Flying4D.dproj"/>
+    </Target>
+    <Target Name="Flying4D:Clean">
+        <MSBuild Projects="Flying4D.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Flying4D:Make">
+        <MSBuild Projects="Flying4D.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SampleRAD">
+        <MSBuild Projects="sample\Rad\SampleRAD.dproj"/>
+    </Target>
+    <Target Name="SampleRAD:Clean">
+        <MSBuild Projects="sample\Rad\SampleRAD.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SampleRAD:Make">
+        <MSBuild Projects="sample\Rad\SampleRAD.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ExemplodeUso">
+        <MSBuild Projects="sample\sample\ExemplodeUso.dproj"/>
+    </Target>
+    <Target Name="ExemplodeUso:Clean">
+        <MSBuild Projects="sample\sample\ExemplodeUso.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ExemplodeUso:Make">
+        <MSBuild Projects="sample\sample\ExemplodeUso.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Flying4D;SampleRAD;ExemplodeUso"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Flying4D:Clean;SampleRAD:Clean;ExemplodeUso:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Flying4D:Make;SampleRAD:Make;ExemplodeUso:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
