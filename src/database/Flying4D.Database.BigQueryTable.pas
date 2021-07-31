@@ -15,60 +15,84 @@ uses
   FireDAC.Stan.Async,
   FireDAC.DApt,
   Flying4D.Database.Interfaces,
-  Flying4D.Resources.Interfaces, System.SysUtils, Flying4D.Core.Interfaces;
+  Flying4D.Resources.Interfaces,
+  System.SysUtils,
+  Flying4D.Core.Interfaces;
 
 type
   TBigQueryTable = class(TInterfacedObject, iBigQueryTable)
     private
       [weak]
       FParent : iConexao;
-      FTable : TFDMetaInfoQuery;
+      FTables : TFDMetaInfoQuery;
       FFields : TFDMetaInfoQuery;
+      FTable : String;
+      FField : String;
+      FFIeldType : String;
       procedure SetOptions(MetaInfo : TFDMetaInfoQuery);
     public
       constructor Create(Parent : iConexao);
       destructor Destroy; override;
       class function New(Parent : iConexao) : iBigQueryTable;
-      function Table : String;
-      function Field : String;
-      function FieldType : String;
+      function Table(Value : String) : iBigQueryTable; overload;
+      function Table : String; overload;
+      function Field(Value : String) : iBigQueryTable; overload;
+      function Field : String; overload;
+      function FieldType(Value : String) : iBigQueryTable; overload;
+      function FieldType : String; overload;
   end;
 
 implementation
 
 function TBigQueryTable.Field: String;
 begin
-  Result := FFields.FieldByName('COLUMN_NAME').AsString;
+  Result := FField;
+end;
+
+function TBigQueryTable.Field(Value: String): iBigQueryTable;
+begin
+  Result := Self;
+  while not FFields.Eof do begin
+    if UpperCase(Value) = UpperCase(FTables.FieldByName('COLUMN_NAME').AsString) then
+      FField := value;
+    FFields.Next;
+  end;
+end;
+
+function TBigQueryTable.FieldType(Value: String): iBigQueryTable;
+begin
+  Result := Self;
+  while not FFields.Eof do begin
+    if UpperCase(Value) = UpperCase(FFields.FieldByName('COLUMN_TYPENAME').AsString) then
+      FFIeldType := VAlue;
+    FFields.Next;
+  end;
 end;
 
 function TBigQueryTable.FieldType: String;
 begin
-  Result := FFields.FieldByName('COLUMN_TYPENAME').AsString;
+  Result := FFIeldType;
 end;
 
 constructor TBigQueryTable.Create(Parent : iConexao);
 begin
   FParent := Parent;
-  FTable := TFDMetaInfoQuery.Create(nil);
+  FTables := TFDMetaInfoQuery.Create(nil);
   FFields := TFDMetaInfoQuery.Create(nil);
-
-  FTable.Connection := FParent.Connection;
+  FTables.Connection := FParent.Connection;
   FFields.Connection := FParent.Connection;
-
-  FTable.MetaInfoKind := mkTables;
+  FTables.MetaInfoKind := mkTables;
   FFields.MetaInfoKind := mkTableFields;
-
-  FTable.Close;
-  SetOptions(FTable);
+  FTables.Close;
+  SetOptions(FTables);
   FFields.Close;
   SetOptions(FFields);
-
-  FTable.Open;
+  FTables.Open;
 end;
 
 destructor TBigQueryTable.Destroy;
 begin
-  FTable.DisposeOf;
+  FTables.DisposeOf;
   FFields.DisposeOf;
   inherited;
 end;
@@ -85,17 +109,25 @@ var
 begin
   os := [];
   Include(os, osMy);
-
   tk := [];
   Include(tk, tkTable);
+  FTables.ObjectScopes := os;
+  FTables.TableKinds := tk;
+end;
 
-  FTable.ObjectScopes := os;
-  FTable.TableKinds := tk;
+function TBigQueryTable.Table(Value: String): iBigQueryTable;
+begin
+  Result := Self;
+  while not FTables.Eof do begin
+    if UpperCase(Value) = UpperCase(FTables.FieldByName('TABLE_NAME').AsString) then
+      FTable := Value;
+    FTables.Next;
+  end;
 end;
 
 function TBigQueryTable.Table: String;
 begin
-  Result := FTable.FieldByName('TABLE_NAME').AsString;
+  Result := FTable;
 end;
 
 end.

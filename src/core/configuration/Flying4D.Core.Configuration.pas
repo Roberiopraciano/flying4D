@@ -9,7 +9,8 @@ uses
   FireDAC.Comp.Client,
   Flying4D.Database.Interfaces,
   Flying4D.Database.BigQueryDatabase,
-  Flying4D.Resources.Interfaces, Flying4D.Resources.Conexao;
+  Flying4D.Resources.Interfaces,
+  Flying4D.Resources.Conexao;
 
 type
   TConfiguration = class(TInterfacedObject, iConfiguration)
@@ -31,6 +32,7 @@ type
       class function New : iConfiguration;
       function Connection(Value : TFDConnection) : iConfiguration; overload;
       function Connection : TFDConnection; overload;
+      function Connect : iConexao;
       function Driver(Value : String) : iConfiguration; overload;
       function Driver : String; overload;
       function DataBase(Value : String) : iConfiguration; overload;
@@ -42,7 +44,7 @@ type
       function Params(Value : String) : iConfiguration; overload;
       function Params : TList<String>; overload;
       function LocationScript(Value : String) : iConfiguration; overload;
-      function LocationScritp : String; overload;
+      function LocationScript : String; overload;
       function LocationLog(Value : String) : iConfiguration; overload;
       function LocationLog : String; overload;
       function TableHistory(Value : String) : iConfiguration; overload;
@@ -54,27 +56,42 @@ implementation
 
 function TConfiguration.LocationLog: String;
 begin
+  if FLocationLog.IsEmpty then begin
+    FLocationLog := '/Log';
+    if not DirectoryExists(ExtractFileDir(GetCurrentDir)+FLocationLog) then
+      ForceDirectories(ExtractFileDir(GetCurrentDir)+FLocationLog);
+  end;
+
   Result := FLocationLog;
 end;
 
 function TConfiguration.LocationLog(Value: String): iConfiguration;
 begin
   Result := Self;
-  if Value = '' then
-    Value := ExtractFileDir(GetCurrentDir) + '/Log';
+
+  if Value.IsEmpty then
+    Value := ExtractFileDir(GetCurrentDir) + FLocationLog;
+
   FLocationLog := Value;
 end;
 
 function TConfiguration.LocationScript(Value: String): iConfiguration;
 begin
   Result := Self;
-  if Value = '' then
-    Value := ExtractFileDir(GetCurrentDir) + '/db';
+
+  if Value.IsEmpty then
+    Value := ExtractFileDir(GetCurrentDir) + FLocationScript;
+
   FLocationScript := Value;
 end;
 
-function TConfiguration.LocationScritp: String;
+function TConfiguration.LocationScript: String;
 begin
+  if FLocationScript.IsEmpty then begin
+    FLocationScript := 'db';
+    if not DirectoryExists(FLocationScript) then
+      CreateDir(FLocationScript);
+  end;
   Result := FLocationScript;
 end;
 
@@ -82,6 +99,11 @@ function TConfiguration.Connection(Value: TFDConnection): iConfiguration;
 begin
   Result := Self;
   FConnection := Value;
+end;
+
+function TConfiguration.Connect: iConexao;
+begin
+  Result := FConexao;
 end;
 
 function TConfiguration.Connection: TFDConnection;
@@ -92,6 +114,7 @@ end;
 constructor TConfiguration.Create;
 begin
   FParams := TList<String>.Create;
+  FConexao := TConexao.New(Self);
 end;
 
 function TConfiguration.DataBase(Value: String): iConfiguration;
@@ -173,10 +196,9 @@ end;
 
 function TConfiguration.Verify: iConfiguration;
 begin
-  FConexao := TConexao.New(Self);
   FScript := TBigQueryDatabase
-              .New(FConexao)
-              .FileScript(Self.LocationScritp);
+              .New(Self)
+              .FileScript(Self.LocationScript);
 end;
 
 end.

@@ -11,9 +11,12 @@ type
   end;
 
   iBigQueryTable = interface
-    function Table : String;
-    function Field : String;
-    function FieldType : String;
+    function Table(Value : String) : iBigQueryTable; overload;
+    function Table : String; overload;
+    function Field(Value : String) : iBigQueryTable; overload;
+    function Field : String; overload;
+    function FieldType(Value : String) : iBigQueryTable; overload;
+    function FieldType : String; overload;
   end;
 
   iQuery = interface

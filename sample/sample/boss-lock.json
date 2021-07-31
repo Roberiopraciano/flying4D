@@ -1,0 +1,14 @@
+{
+	"hash": "d41d8cd98f00b204e9800998ecf8427e",
+	"updated": "2021-07-30T10:25:23.7138131-03:00",
+	"installedModules": {
+		"https://github.com/alepmedeiros/flying4d": {
+			"name": "flying4d",
+			"version": "1.0.0",
+			"hash": "b62e3c2a0288dcdcfbb0f164f045c5b8",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}

@@ -67,6 +67,7 @@ end;
 function TQuery.ExecSQL: iQuery;
 begin
   Result := Self;
+  FQuery.Close;
   FQuery.ExecSQL;
 end;
 
@@ -90,6 +91,8 @@ end;
 function TQuery.SQL(Value: String): iQuery;
 begin
   Result := Self;
+  FQuery.Close;
+  FQuery.SQL.Clear;
   FQuery.SQL.Add(Value);
 end;
 
