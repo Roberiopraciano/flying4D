@@ -36,7 +36,7 @@ uses
   Vcl.DBGrids,
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
-  Flying4D;
+  Flying4D, FireDAC.Phys.PG, FireDAC.Phys.PGDef;
 
 type
   TForm3 = class(TForm)
@@ -45,6 +45,9 @@ type
     FDQuery1: TFDQuery;
     DataSource1: TDataSource;
     DBGrid1: TDBGrid;
+    FDConnection2: TFDConnection;
+    FDPhysPgDriverLink1: TFDPhysPgDriverLink;
+    FDQuery2: TFDQuery;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private

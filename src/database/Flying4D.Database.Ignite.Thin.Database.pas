@@ -1,14 +1,11 @@
 unit Flying4D.Database.Ignite.Thin.Database;
-
 interface
-
 uses
   Flying4D.Database.Ignite.Thin.Interfaces,
   System.Classes,
   Flying4D.Resources.Interfaces,
   Flying4D.Database.Interfaces,
   Flying4D.Database.BigQueryTable, System.SysUtils, Flying4D.Core.Interfaces;
-
 type
   TIgniteThinDatabase = class(TInterfacedObject, iIgniteThinDatabase)
     private
@@ -59,9 +56,7 @@ type
       function SUCCESS(Value : Integer) : iIgniteThinDatabase; overload;
       function SUCCESS : Integer; overload;
   end;
-
 implementation
-
 function TIgniteThinDatabase.CHECKSUM: Integer;
 begin
   Result := FCHECKSUM;
@@ -77,11 +72,9 @@ constructor TIgniteThinDatabase.Create(Parent : iConfiguration);
 begin
   FParent := Parent;
   FTable := TBigQueryTable.New(FParent.Connect);
-
   if FParent.TableHistory.IsEmpty then
     FParent.TableHistory('FLYING_HISTORY');
 end;
-
 function TIgniteThinDatabase.DESCRIPTION(Value: String): iIgniteThinDatabase;
 begin
   Result := Self;
@@ -95,10 +88,8 @@ end;
 
 destructor TIgniteThinDatabase.Destroy;
 begin
-
   inherited;
 end;
-
 function TIgniteThinDatabase.EXECUTION_TIME: Integer;
 begin
   Result := FEXECUTION_TIME;
@@ -135,7 +126,6 @@ begin
     FEXECUTION_TIME.ToString+','+
     FSUCCESS.ToString+');';
 end;
-
 function TIgniteThinDatabase.INSTALLED_BY(Value: String): iIgniteThinDatabase;
 begin
   Result := Self;
@@ -178,12 +168,10 @@ begin
     ' MAX(INSTALLED_RANK) AS RANK,'+
     ' MAX(CHECKSUM) as CHK FROM '+FParent.TableHistory+';';;
 end;
-
 class function TIgniteThinDatabase.New (Parent : iConfiguration) : iIgniteThinDatabase;
 begin
   Result := Self.Create(Parent);
 end;
-
 function TIgniteThinDatabase.NewSchema: String;
 begin
   Result :=
@@ -205,7 +193,7 @@ begin
     ' '+QuotedStr('New Create')+','+
     ' 0,'+
     ' '+QuotedStr('root')+','+
-    ' '+QuotedStr(DateToStr(Now))+','+
+    ' current_timestamp,'+
     ' 0,'+
     ' 0)';
 end;
@@ -237,7 +225,6 @@ begin
     ' SUCCESS INT,'+
     ' PRIMARY KEY (INSTALLED_RANK));';
 end;
-
 function TIgniteThinDatabase.SCRIPT(Value: String): iIgniteThinDatabase;
 begin
   Result := Self;
@@ -269,7 +256,6 @@ begin
     ' AND INSTALLED_RANK > '+FINSTALLED_RANK.ToString+
     ' ORDER BY INSTALLED_RANK;';
 end;
-
 function TIgniteThinDatabase.SUCCESS: Integer;
 begin
   Result := FSUCCESS;
@@ -307,7 +293,6 @@ begin
   Result := Self;
   FVERSION := Value+1;
 end;
-
 end.
 
 

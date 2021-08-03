@@ -43,6 +43,7 @@ object Form3: TForm3
         'i\ExemplosCRUD\database\Dados.sdb'
       'LockingMode=Normal'
       'DriverID=SQLite')
+    Connected = True
     LoginPrompt = False
     Left = 408
     Top = 32
@@ -58,5 +59,30 @@ object Form3: TForm3
     DataSet = FDQuery1
     Left = 264
     Top = 144
+  end
+  object FDConnection2: TFDConnection
+    Params.Strings = (
+      'Database=dev'
+      'User_Name=root'
+      'Password=1'
+      'Server=localhost'
+      'DriverID=PG')
+    LoginPrompt = False
+    Left = 248
+    Top = 16
+  end
+  object FDPhysPgDriverLink1: TFDPhysPgDriverLink
+    VendorLib = 
+      'C:\Users\Criacao\Documents\GitHub\flying4D\sample\sample\Win32\D' +
+      'ebug\libpq.dll'
+    Left = 144
+    Top = 8
+  end
+  object FDQuery2: TFDQuery
+    Connection = FDConnection2
+    SQL.Strings = (
+      'select * from produtos')
+    Left = 352
+    Top = 128
   end
 end
